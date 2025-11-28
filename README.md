@@ -23,8 +23,8 @@ Get-Netadapter
 3. 会看见如下类似输出，停止接收，以防卡顿
 ![](./images/screenshot1.png)
 其中
-**60 who has 172.23.100.101？Tell 172.23.100.142**
-   则**172.23.100.101**就是我们要填的ip地址，*以下都使用此ip地址作为示例*
+**60 who has 172.23.100.101？Tell 172.23.100.142**<br>
+则**172.23.100.101**就是我们要填的ip地址，*以下都使用此ip地址作为示例*
 #### 1.3.2.2 更改ip  
 1. 控制面板 -> 所有控制面板项 -> 网络和共享中心 ->更改适配器设置
 2. 找到以太网 **Realtek Gaming GbE Family Controller**
@@ -40,7 +40,7 @@ Get-Netadapter
 ![](./images/screenshot2.png)
 其中
 - 出现次数多的**1290 4002 -> 4002 Len=1248**，则**4002**为MSOP Port
-- 出现次数少的**1290 8892 -> 8892 Len=1248**，则**8892**为DIFOP Port
+- 出现次数少的**1290 8892 -> 8892 Len=1248**，则**8892**为DIFOP Port<br>
 *以下都使用此端口号作为示例*
 ### 1.4.2 RSVIEW设置
 1. 左上雷达图标（open sensor）
@@ -85,7 +85,7 @@ source install/setup.bash
 #或者直接在主目录中打开
 nano ~/3dlidar_ws/src/rsLiDAR_sdk/config/config.yaml
 ```
-*==config.yaml遵循YAML格式。该格式对缩进有严格要求。修改config.yaml之后，请确保每行开头的缩进仍保持一致==*
+*config.yaml遵循YAML格式。该格式对缩进有严格要求。修改config.yaml之后，请确保每行开头的缩进仍保持一致*
 ### 2.4.1 commen部分
 ``` yaml
 common:
