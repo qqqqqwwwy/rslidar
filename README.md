@@ -52,13 +52,38 @@ Get-Netadapter
 
 # 2. ROS2显示
 ## 2.1 硬件配置
-使用一根支持至少100Mbps的网线连接电脑与雷达（先不打开雷达电源），主机需连接wifi，如果不能，请将此步移至**步骤2.3**之后
-## 2.2 虚拟机设置1
-1. 使用VMware Workstation Pro，ros-jazzy-desktop
-*最好请下载ROS2 desktop-full版，如若不是，请参考 https://github.com/RoboSense-LiDAR/rslidar_sdk/blob/main/README_CN.md
-2. 保持虚拟机关机状态下
-	编辑虚拟机设置 -> 网络适配器 -> 选择**net模式**
-## 2.3 资源下载
+使用一根支持至少100Mbps的网线连接电脑与雷达（先不打开雷达电源），主机需连接wifi
+## 2.2 主机环境设置
+### 2.2.1 关闭Hyper-V和wsl2
+ 主机打开Powershell
+``` Powershell
+dism.exe /Online /Disable-Feature /FeatureName:Microsoft-Hyper-V-All /NoRestart
+dism.exe /Online /Disable-Feature /FeatureName:VirtualMachinePlatform /NoRestart
+dism.exe /Online /Disable-Feature /FeatureName:HypervisorPlatform /NoRestart
+dism.exe /Online /Disable-Feature /FeatureName:WindowsSubsystemForLinux /NoRestart
+bcdedit /set hypervisorlaunchtype off
+#完成后重启
+```
+### 验证 
+主机Powershell输入
+``` Powershell
+systeminfo
+```
+ *Hyper-V 要求* 中满足
+-   **虚拟机监视器模式扩展: 是**
+- 不出现 **A hypervisor has been detected**
+## 2.3 VMware虚拟机初始设置
+### 2.3.1 ROS2要求
+使用VMware Workstation Pro，ros-jazzy-desktop
+*最好请下载ROS2 desktop-full版，如若不是，请参考 https://github.com/RoboSense-LiDAR/rslidar_sdk/blob/main/README_CN.md 文档*
+
+### 2.3.2 虚拟机设置1
+保持虚拟机关机状态下,VMware中
+```
+编辑虚拟机设置 -> 网络适配器 -> 选择**net模式**
+```
+
+## 2.4工作空间搭建
 1. 创建工作空间
 ``` bash
 mkdir -p ~/3dlidar_ws/src
@@ -80,13 +105,13 @@ sudo apt-get install -y  libpcap-dev
 colcon build
 source install/setup.bash
 ```
-## 2.4 更改配置文件参数
+## 2.5 更改配置文件参数
 ``` bash
 #或者直接在主目录中打开
 nano ~/3dlidar_ws/src/rsLiDAR_sdk/config/config.yaml
 ```
 *config.yaml遵循YAML格式。该格式对缩进有严格要求。修改config.yaml之后，请确保每行开头的缩进仍保持一致*
-### 2.4.1 commen部分
+###  commen部分
 ``` yaml
 common:
   msg_source: 1                                   
@@ -94,7 +119,7 @@ common:
   send_point_cloud_ros: true
 #具体原因参考文件注释及官方文档
 ```
-### 2.4.2 lidar部分 
+### lidar部分 
 ``` yaml
 lidar:
   - driver:
@@ -103,37 +128,24 @@ lidar:
       difop_port: 8892             #  Difop port of lidar
 #其余参数根据雷达型号和具体要求改变，此示例无需修改
 ```
-## 2.5 环境设置
-### 2.5.1 主机设置
-#### 2.5.1.1 关闭Hyper-V和wsl2
- 主机打开Powershell
-``` Powershell
-dism.exe /Online /Disable-Feature /FeatureName:Microsoft-Hyper-V-All /NoRestart
-dism.exe /Online /Disable-Feature /FeatureName:VirtualMachinePlatform /NoRestart
-dism.exe /Online /Disable-Feature /FeatureName:HypervisorPlatform /NoRestart
-dism.exe /Online /Disable-Feature /FeatureName:WindowsSubsystemForLinux /NoRestart
-bcdedit /set hypervisorlaunchtype off
-#完成后重启
+## 2.6 VMware桥接配置
+### 2.6.1 设置Vmnet桥接到物理网卡
+虚拟机关机
+VMware中
 ```
-#### 2.5.1.2 验证 
-主机Powershell输入
+编辑 -> 虚拟机网络编辑器  -> Vmnet0 -> 桥接模式 -> 连接至有线网口所对应的网卡（一般是物理网卡）Realtek Gaming GbE Family Controller -> 应用，确认
 ```
-systeminfo
+### 2.6.2 虚拟机设置
 ```
-输出的 Hyper-V 要求 中
-- 要有  **虚拟机监视器模式扩展: 是**
-- 不要有 **A hypervisor has been detected**
-### 2.5.2 虚拟机设置2
-#### 2.5.2.1 桥接模式设置
-1. 虚拟机关机
-2. VMware中
-	1. 编辑 -> 虚拟机网络编辑器  -> Vmnet0 -> 桥接模式 -> 连接至**有线网口所对应的网卡（一般是物理网卡）Realtek Gaming GbE Family Controller** -> 应用，确认
-	2. 编辑虚拟机设置 -> 网络适配器 -> 选择**桥接模式**，勾选**复制物理网络连接状态**
-3. 主机中
-	1. 控制面板 -> 所有控制面板项 -> 网络和共享中心 ->更改适配器设置
-	2. 找到以太网 **Realtek Gaming GbE Family Controller**
-	3. 右键 -> 属性 -> 勾选VMware Bridge Protocol
-#### 2.5.2.2 验证
+编辑虚拟机设置 -> 网络适配器 -> 桥接模式，勾选"复制物理网络连接状态"
+```
+### 2.6.3 主机网卡开启VMware协议
+```
+1. 控制面板 -> 所有控制面板项 -> 网络和共享中心 ->更改适配器设置
+2. 找到以太网 **Realtek Gaming GbE Family Controller**
+3. 右键 -> 属性 -> 勾选VMware Bridge Protocol
+```
+### 验证
 主机cmd输入
 ``` cmd
 sc query vmnetbridge
@@ -141,12 +153,6 @@ sc query vmnetbridge
 应有输出 
 ``` cmd
 STATE              : 4  RUNNING
-```
-## 2.6 关闭防火墙
-打开虚拟机，bash中
-``` bash
-sudo ufw disable
-#用完记得开回来
 ```
 ## 2.7 虚拟机IP设置
 ### 2.7.1 确认桥接的物理网卡名称
@@ -168,7 +174,7 @@ ip a
 ```
 ens33就是我的物理网卡名称
 *物理网卡的名称通常为ensXX，enpXsX等，如上所示为ens33，以下网卡名称统一使用ens33作为示例*
-### 2.7.2 虚拟机ip更改 （临时配置）
+### 2.7.2 设置临时IP
 bash中
 ``` bash
 sudo ip addr add 172.23.100.101/24 dev ens33
@@ -183,13 +189,21 @@ ip a
     inet 172.23.100.101/24 scope global ens33
        valid_lft forever preferred_lft forever
 ```
-## 2.8 Rivz2显示点云图
+## 2.8 关闭防火墙
+bash中
+``` bash
+sudo ufw disable
+#用完记得开回来
+```
+## 2.9 Rivz2显示点云图
 1. 打开雷达电源
 2. bash中
 ``` bash
 cd ~/3dlidar_ws
 colcon build
 source install/setup.bash
+ros2 launch rslidar_sdk start.py
+```
 ros2 launch rslidar_sdk start.py
 ```
 
