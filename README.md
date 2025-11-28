@@ -21,7 +21,7 @@ Get-Netadapter
 1. 打开Wireshark
 2. 选择以太网，双击打开
 3. 会看见如下类似输出，停止接收，以防卡顿
-![](./images/屏幕截图 2025-11-25 100432.png)
+![](./images/srceenshot1.png)
 其中
 **60 who has 172.23.100.101？Tell 172.23.100.142**
 ==172.23.100.101==就是我们要填的ip地址，*以下都使用此ip地址作为示例*
@@ -37,7 +37,7 @@ Get-Netadapter
 ## 1.4 RSVIEW设置
 ### 1.4.1 wireshark抓包查看端口号
 继续Wireshark输出，此时能看到类似如下输出，停止输出
-![](./images/屏幕截图 2025-11-25 100534.png)
+![](./images/srceenshot2.png)
 其中
 **1290 4002 -> 4002 Len=1248**   出现次数多的**4002**为MSOP Port
 **1290 8892 -> 8892 Len=1248**   出现次数少的**8892**为DIFOP Port
