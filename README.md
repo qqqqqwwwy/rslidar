@@ -5,27 +5,27 @@
 ## 1.2 软件资源
 1. RSVIEW http://www.robosense.cn/resources （Helios系列）
 2. Wireshark https://2.na.dl.wireshark.org/win64/Wireshark-4.6.1-x64.exe
-## 1.3 电脑配置
+## 1.3 电脑网卡配置
 ### 1.3.1 网线接口速率配置
-#### 1.3.1.1 网线接口速率配置
 1. 设备管理器 -> 网络适配器 -> Realtek Gaming GbE Family Controller
 2. 双击 -> 高级 -> 连接速度和双工模式 -> 自动侦测或者大于100M的全双工模式
-#### 1.3.1.2 验证
+### 1.3.2 验证
 连接好并打开雷达电源，powershell中输入
 ``` Powershell
 Get-Netadapter
 ```
 确认Name为**以太网**的LinkSpeed为**100Mbps**
-### 1.3.2 ip设置
-#### 1.3.2.1 wireshark抓包查看ip
+## 1.4 ip设置
+### 1.4.1 wireshark抓包查看ip
 1. 打开Wireshark
 2. 选择以太网，双击打开
 3. 会看见如下类似输出，停止接收，以防卡顿
 ![](./images/screenshot1.png)
-其中
-**60 who has 172.23.100.101？Tell 172.23.100.142**<br>
-则**172.23.100.101**就是我们要填的ip地址，*以下都使用此ip地址作为示例*
-#### 1.3.2.2 更改ip  
+```
+60 who has 172.23.100.101? Tell 172.23.100.142
+```
+==172.23.100.101==就是我们要填的ip地址，*以下都使用此ip地址作为示例*
+### 1.4.2 更改ip  
 1. 控制面板 -> 所有控制面板项 -> 网络和共享中心 ->更改适配器设置
 2. 找到以太网 **Realtek Gaming GbE Family Controller**
 3. 右键 -> 属性 -> Internet 协议版本4（TCP/IPv4）-> 
@@ -34,15 +34,18 @@ Get-Netadapter
 	- 子网掩码：255.255.255.0
 	- 默认网关：不填
 - 使用下面的DNS服务器地址（都不填）
-## 1.4 RSVIEW设置
-### 1.4.1 wireshark抓包查看端口号
+## 1.5 RSVIEW显示点云图
+### 1.5.1 wireshark抓包查看端口号
 继续Wireshark输出，此时能看到类似如下输出，停止输出
 ![](./images/screenshot2.png)
-其中
-- 出现次数多的**1290 4002 -> 4002 Len=1248**，则**4002**为MSOP Port
-- 出现次数少的**1290 8892 -> 8892 Len=1248**，则**8892**为DIFOP Port<br>
+```
+1290 4002 -> 4002 Len=1248
+1290 8892 -> 8892 Len=1248  
+```
+出现次数多的**4002**为MSOP Port
+出现次数少的**8892**为DIFOP Port
 *以下都使用此端口号作为示例*
-### 1.4.2 RSVIEW设置
+### 1.5.2 RSVIEW设置
 1. 左上雷达图标（open sensor）
 2. sensor tpye -> RS16 -> OK
 3. 
@@ -204,7 +207,6 @@ colcon build
 source install/setup.bash
 ros2 launch rslidar_sdk start.py
 ```
-
 
 
 
