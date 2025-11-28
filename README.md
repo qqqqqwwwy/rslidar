@@ -42,8 +42,8 @@ Get-Netadapter
 1290 4002 -> 4002 Len=1248
 1290 8892 -> 8892 Len=1248  
 ```
-出现次数多的**4002**为MSOP Port
-出现次数少的**8892**为DIFOP Port
+出现次数多的**4002**为MSOP Port<dr>
+出现次数少的**8892**为DIFOP Port<dr>
 *以下都使用此端口号作为示例*
 ### 1.5.2 RSVIEW设置
 1. 左上雷达图标（open sensor）
