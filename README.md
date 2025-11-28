@@ -1,388 +1,396 @@
-# \# 1. Windows显示
+\# 1. Windows显示
 
-# \## 1.1 硬件配置
+\## 1.1 硬件配置
 
-# 1\. windows10 / 11
+1\. windows10 / 11
 
-# 2\. 使用一根支持至少100Mbps的网线连接电脑与雷达（先不打开雷达电源）
+2\. 使用一根支持至少100Mbps的网线连接电脑与雷达（先不打开雷达电源）
 
-# \## 1.2 软件资源
+\## 1.2 软件资源
 
-# 1\. RSVIEW http://www.robosense.cn/resources （Helios系列）
+1\. RSVIEW http://www.robosense.cn/resources （Helios系列）
 
-# 2\. Wireshark https://2.na.dl.wireshark.org/win64/Wireshark-4.6.1-x64.exe
+2\. Wireshark https://2.na.dl.wireshark.org/win64/Wireshark-4.6.1-x64.exe
 
-# \## 1.3 电脑配置
+\## 1.3 电脑配置
 
-# \### 1.3.1 网线接口速率配置
+\### 1.3.1 网线接口速率配置
 
-# \#### 1.3.1.1 网线接口速率配置
+\#### 1.3.1.1 网线接口速率配置
 
-# 1\. 设备管理器 -> 网络适配器 -> Realtek Gaming GbE Family Controller
+1\. 设备管理器 -> 网络适配器 -> Realtek Gaming GbE Family Controller
 
-# 2\. 双击 -> 高级 -> 连接速度和双工模式 -> 自动侦测或者大于100M的全双工模式
+2\. 双击 -> 高级 -> 连接速度和双工模式 -> 自动侦测或者大于100M的全双工模式
 
-# \#### 1.3.1.2 验证
+\#### 1.3.1.2 验证
 
-# 连接好并打开雷达电源，powershell中输入
+连接好并打开雷达电源，powershell中输入
 
-# ``` Powershell
+``` Powershell
 
-# Get-Netadapter
+Get-Netadapter
 
-# ```
+```
 
-# 确认Name为\*\*以太网\*\*的LinkSpeed为\*\*100Mbps\*\*
+确认Name为\*\*以太网\*\*的LinkSpeed为\*\*100Mbps\*\*
 
-# \### 1.3.2 ip设置
+\### 1.3.2 ip设置
 
-# \#### 1.3.2.1 wireshark抓包查看ip
+\#### 1.3.2.1 wireshark抓包查看ip
 
-# 1\. 打开Wireshark
+1\. 打开Wireshark
 
-# 2\. 选择以太网，双击打开
+2\. 选择以太网，双击打开
 
-# 3\. 会看见如下类似输出，停止接收，以防卡顿
+3\. 会看见如下类似输出，停止接收，以防卡顿
 
-# !\[](./images/屏幕截图 2025-11-25 100432.png)
+!\[](./images/屏幕截图 2025-11-25 100432.png)
 
-# 其中
+其中
 
-# \*\*60 who has 172.23.100.101？Tell 172.23.100.142\*\*
+\*\*60 who has 172.23.100.101？Tell 172.23.100.142\*\*
 
-# ==172.23.100.101==就是我们要填的ip地址，\*以下都使用此ip地址作为示例\*
+==172.23.100.101==就是我们要填的ip地址，\*以下都使用此ip地址作为示例\*
 
-# \#### 1.3.2.2 更改ip
+\#### 1.3.2.2 更改ip  
 
-# 1\. 控制面板 -> 所有控制面板项 -> 网络和共享中心 ->更改适配器设置
+1\. 控制面板 -> 所有控制面板项 -> 网络和共享中心 ->更改适配器设置
 
-# 2\. 找到以太网 \*\*Realtek Gaming GbE Family Controller\*\*
+2\. 找到以太网 \*\*Realtek Gaming GbE Family Controller\*\*
 
-# 3\. 右键 -> 属性 -> Internet 协议版本4（TCP/IPv4）->
+3\. 右键 -> 属性 -> Internet 协议版本4（TCP/IPv4）-> 
 
-# \- 使用下面的IP地址
+\- 使用下面的IP地址 
 
-#  	- IP地址：172.23.100.101
+&nbsp;	- IP地址：172.23.100.101
 
-#  	- 子网掩码：255.255.255.0
+&nbsp;	- 子网掩码：255.255.255.0
 
-#  	- 默认网关：不填
+&nbsp;	- 默认网关：不填
 
-# \- 使用下面的DNS服务器地址（都不填）
+\- 使用下面的DNS服务器地址（都不填）
 
-# \## 1.4 RSVIEW设置
+\## 1.4 RSVIEW设置
 
-# \### 1.4.1 wireshark抓包查看端口号
+\### 1.4.1 wireshark抓包查看端口号
 
-# 继续Wireshark输出，此时能看到类似如下输出，停止输出
+继续Wireshark输出，此时能看到类似如下输出，停止输出
 
-# !\[](./images/屏幕截图 2025-11-25 100534.png)
+!\[](./images/屏幕截图 2025-11-25 100534.png)
 
-# 其中
+其中
 
-# \*\*1290 4002 -> 4002 Len=1248\*\*   出现次数多的\*\*4002\*\*为MSOP Port
+\*\*1290 4002 -> 4002 Len=1248\*\*   出现次数多的\*\*4002\*\*为MSOP Port
 
-# \*\*1290 8892 -> 8892 Len=1248\*\*   出现次数少的\*\*8892\*\*为DIFOP Port
+\*\*1290 8892 -> 8892 Len=1248\*\*   出现次数少的\*\*8892\*\*为DIFOP Port
 
-# \*以下都使用此端口号作为示例\*
+\*以下都使用此端口号作为示例\*
 
-# \### 1.4.2 RSVIEW设置
+\### 1.4.2 RSVIEW设置
 
-# 1\. 左上雷达图标（open sensor）
+1\. 左上雷达图标（open sensor）
 
-# 2\. sensor tpye -> RS16 -> OK
+2\. sensor tpye -> RS16 -> OK
 
-# 3\.
+3\. 
 
-# \- MSOP Port = 4002
+\- MSOP Port = 4002
 
-# \- DIFOP Port = 8892
+\- DIFOP Port = 8892
 
-# \- 其余默认 -> OK
+\- 其余默认 -> OK
 
-# 
 
-# \# 2. ROS2显示
 
-# \## 2.1 硬件配置
+\# 2. ROS2显示
 
-# 使用一根支持至少100Mbps的网线连接电脑与雷达（先不打开雷达电源），主机需连接wifi，如果不能，请将此步移至\*\*步骤2.3\*\*之后
+\## 2.1 硬件配置
 
-# \## 2.2 虚拟机设置1
+使用一根支持至少100Mbps的网线连接电脑与雷达（先不打开雷达电源），主机需连接wifi，如果不能，请将此步移至\*\*步骤2.3\*\*之后
 
-# 1\. 使用VMware Workstation Pro，ros-jazzy-desktop
+\## 2.2 虚拟机设置1
 
-# \*最好请下载ROS2 desktop-full版，如若不是，请参考 https://github.com/RoboSense-LiDAR/rslidar\_sdk/blob/main/README\_CN.md
+1\. 使用VMware Workstation Pro，ros-jazzy-desktop
 
-# 2\. 保持虚拟机关机状态下
+\*最好请下载ROS2 desktop-full版，如若不是，请参考 https://github.com/RoboSense-LiDAR/rslidar\_sdk/blob/main/README\_CN.md
 
-#  	编辑虚拟机设置 -> 网络适配器 -> 选择\*\*net模式\*\*
+2\. 保持虚拟机关机状态下
 
-# \## 2.3 资源下载
+&nbsp;	编辑虚拟机设置 -> 网络适配器 -> 选择\*\*net模式\*\*
 
-# 1\. 创建工作空间
+\## 2.3 资源下载
 
-# ``` bash
+1\. 创建工作空间
 
-# mkdir -p ~/3dlidar\_ws/src
+``` bash
 
-# cd ~/3dlidar\_ws/src
+mkdir -p ~/3dlidar\_ws/src
 
-# colcon build
+cd ~/3dlidar\_ws/src
 
-# ```
+colcon build
 
-# 2\. 下载资源
+```
 
-# ``` bash
+2\. 下载资源
 
-# cd ~/3dlidar\_ws/src
+``` bash 
 
-# \#克隆SDK包
+cd ~/3dlidar\_ws/src
 
-# git clone https://github.com/RoboSense-LiDAR/rslidar\_sdk.git
+\#克隆SDK包
 
-# \#克隆消息包
+git clone https://github.com/RoboSense-LiDAR/rslidar\_sdk.git
 
-# git clone https://github.com/RoboSense-LiDAR/rslidar\_msg.git
+\#克隆消息包
 
-# cd rslidar\_sdk
+git clone https://github.com/RoboSense-LiDAR/rslidar\_msg.git
 
-# git submodule init
+cd rslidar\_sdk
 
-# git submodule update
+git submodule init
 
-# \#下载libpcap 版本号：>= v1.7.4
+git submodule update
 
-# sudo apt-get install -y  libpcap-dev
+\#下载libpcap 版本号：>= v1.7.4
 
-# colcon build
+sudo apt-get install -y  libpcap-dev
 
-# source install/setup.bash
+colcon build
 
-# ```
+source install/setup.bash
 
-# \## 2.4 更改配置文件参数
+```
 
-# ``` bash
+\## 2.4 更改配置文件参数
 
-# \#或者直接在主目录中打开
+``` bash
 
-# nano ~/3dlidar\_ws/src/rsLiDAR\_sdk/config/config.yaml
+\#或者直接在主目录中打开
 
-# ```
+nano ~/3dlidar\_ws/src/rsLiDAR\_sdk/config/config.yaml
 
-# \*==config.yaml遵循YAML格式。该格式对缩进有严格要求。修改config.yaml之后，请确保每行开头的缩进仍保持一致==\*
+```
 
-# \### 2.4.1 commen部分
+\*==config.yaml遵循YAML格式。该格式对缩进有严格要求。修改config.yaml之后，请确保每行开头的缩进仍保持一致==\*
 
-# ``` yaml
+\### 2.4.1 commen部分
 
-# common:
+``` yaml
 
-#   msg\_source: 1
+common:
 
-#   send\_packet\_ros: false
+&nbsp; msg\_source: 1                                   
 
-#   send\_point\_cloud\_ros: true
+&nbsp; send\_packet\_ros: false                
 
-# \#具体原因参考文件注释及官方文档
+&nbsp; send\_point\_cloud\_ros: true
 
-# ```
+\#具体原因参考文件注释及官方文档
 
-# \### 2.4.2 lidar部分
+```
 
-# ``` yaml
+\### 2.4.2 lidar部分 
 
-# lidar:
+``` yaml
 
-#   - driver:
+lidar:
 
-#       lidar\_type: RS16             #  雷达型号
+&nbsp; - driver:
 
-#       msop\_port: 4002              #  Msop port of lidar
+&nbsp;     lidar\_type: RS16             #  雷达型号
 
-#       difop\_port: 8892             #  Difop port of lidar
+&nbsp;     msop\_port: 4002              #  Msop port of lidar
 
-# \#其余参数根据雷达型号和具体要求改变，此示例无需修改
+&nbsp;     difop\_port: 8892             #  Difop port of lidar
 
-# ```
+\#其余参数根据雷达型号和具体要求改变，此示例无需修改
 
-# \## 2.5 环境设置
+```
 
-# \### 2.5.1 主机设置
+\## 2.5 环境设置
 
-# \#### 2.5.1.1 关闭Hyper-V和wsl2
+\### 2.5.1 主机设置
 
-#  主机打开Powershell
+\#### 2.5.1.1 关闭Hyper-V和wsl2
 
-# ``` Powershell
+&nbsp;主机打开Powershell
 
-# dism.exe /Online /Disable-Feature /FeatureName:Microsoft-Hyper-V-All /NoRestart
+``` Powershell
 
-# dism.exe /Online /Disable-Feature /FeatureName:VirtualMachinePlatform /NoRestart
+dism.exe /Online /Disable-Feature /FeatureName:Microsoft-Hyper-V-All /NoRestart
 
-# dism.exe /Online /Disable-Feature /FeatureName:HypervisorPlatform /NoRestart
+dism.exe /Online /Disable-Feature /FeatureName:VirtualMachinePlatform /NoRestart
 
-# dism.exe /Online /Disable-Feature /FeatureName:WindowsSubsystemForLinux /NoRestart
+dism.exe /Online /Disable-Feature /FeatureName:HypervisorPlatform /NoRestart
 
-# bcdedit /set hypervisorlaunchtype off
+dism.exe /Online /Disable-Feature /FeatureName:WindowsSubsystemForLinux /NoRestart
 
-# \#完成后重启
+bcdedit /set hypervisorlaunchtype off
 
-# ```
+\#完成后重启
 
-# \#### 2.5.1.2 验证
+```
 
-# 主机Powershell输入
+\#### 2.5.1.2 验证 
 
-# ```
+主机Powershell输入
 
-# systeminfo
+```
 
-# ```
+systeminfo
 
-# 输出的 Hyper-V 要求 中
+```
 
-# \- 要有  \*\*虚拟机监视器模式扩展: 是\*\*
+输出的 Hyper-V 要求 中
 
-# \- 不要有 \*\*A hypervisor has been detected\*\*
+\- 要有  \*\*虚拟机监视器模式扩展: 是\*\*
 
-# \### 2.5.2 虚拟机设置2
+\- 不要有 \*\*A hypervisor has been detected\*\*
 
-# \#### 2.5.2.1 桥接模式设置
+\### 2.5.2 虚拟机设置2
 
-# 1\. 虚拟机关机
+\#### 2.5.2.1 桥接模式设置
 
-# 2\. VMware中
+1\. 虚拟机关机
 
-#  	1. 编辑 -> 虚拟机网络编辑器  -> Vmnet0 -> 桥接模式 -> 连接至\*\*有线网口所对应的网卡（一般是物理网卡）Realtek Gaming GbE Family Controller\*\* -> 应用，确认
+2\. VMware中
 
-#  	2. 编辑虚拟机设置 -> 网络适配器 -> 选择\*\*桥接模式\*\*，勾选\*\*复制物理网络连接状态\*\*
+&nbsp;	1. 编辑 -> 虚拟机网络编辑器  -> Vmnet0 -> 桥接模式 -> 连接至\*\*有线网口所对应的网卡（一般是物理网卡）Realtek Gaming GbE Family Controller\*\* -> 应用，确认
 
-# 3\. 主机中
+&nbsp;	2. 编辑虚拟机设置 -> 网络适配器 -> 选择\*\*桥接模式\*\*，勾选\*\*复制物理网络连接状态\*\*
 
-#  	1. 控制面板 -> 所有控制面板项 -> 网络和共享中心 ->更改适配器设置
+3\. 主机中
 
-#  	2. 找到以太网 \*\*Realtek Gaming GbE Family Controller\*\*
+&nbsp;	1. 控制面板 -> 所有控制面板项 -> 网络和共享中心 ->更改适配器设置
 
-#  	3. 右键 -> 属性 -> 勾选VMware Bridge Protocol
+&nbsp;	2. 找到以太网 \*\*Realtek Gaming GbE Family Controller\*\*
 
-# \#### 2.5.2.2 验证
+&nbsp;	3. 右键 -> 属性 -> 勾选VMware Bridge Protocol
 
-# 主机cmd输入
+\#### 2.5.2.2 验证
 
-# ``` cmd
+主机cmd输入
 
-# sc query vmnetbridge
+``` cmd
 
-# ```
+sc query vmnetbridge
 
-# 应有输出
+```
 
-# ``` cmd
+应有输出 
 
-# STATE              : 4  RUNNING
+``` cmd
 
-# ```
+STATE              : 4  RUNNING
 
-# \## 2.6 关闭防火墙
+```
 
-# 打开虚拟机，bash中
+\## 2.6 关闭防火墙
 
-# ``` bash
+打开虚拟机，bash中
 
-# sudo ufw disable
+``` bash
 
-# \#用完记得开回来
+sudo ufw disable
 
-# ```
+\#用完记得开回来
 
-# \## 2.7 虚拟机IP设置
+```
 
-# \### 2.7.1 确认桥接的物理网卡名称
+\## 2.7 虚拟机IP设置
 
-# bash中
+\### 2.7.1 确认桥接的物理网卡名称
 
-# ``` bash
+bash中
 
-# ip a
+``` bash
 
-# ```
+ip a
 
-# 有如下类似输出
+```
 
-# ``` bash
+有如下类似输出
 
-# 1: lo: <LOOPBACK,UP,LOWER\_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+``` bash
 
-#     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+1: lo: <LOOPBACK,UP,LOWER\_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
 
-#     inet 127.0.0.1/8 scope host lo
+&nbsp;   link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 
-#        valid\_lft forever preferred\_lft forever
+&nbsp;   inet 127.0.0.1/8 scope host lo
 
-#     inet6 ::1/128 scope host noprefixroute
+&nbsp;      valid\_lft forever preferred\_lft forever
 
-#        valid\_lft forever preferred\_lft forever
+&nbsp;   inet6 ::1/128 scope host noprefixroute 
 
-# 2: ens33: <BROADCAST,MULTICAST,UP,LOWER\_UP> mtu 1500 qdisc fq\_codel state UP group default qlen 1000
+&nbsp;      valid\_lft forever preferred\_lft forever
 
-#     link/ether 00:0c:29:ba:50:bc brd ff:ff:ff:ff:ff:ff
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER\_UP> mtu 1500 qdisc fq\_codel state UP group default qlen 1000
 
-#     altname enp2s1
+&nbsp;   link/ether 00:0c:29:ba:50:bc brd ff:ff:ff:ff:ff:ff
 
-# ```
+&nbsp;   altname enp2s1
 
-# ens33就是我的物理网卡名称
+```
 
-# \*物理网卡的名称通常为ensXX，enpXsX等，如上所示为ens33，以下网卡名称统一使用ens33作为示例\*
+ens33就是我的物理网卡名称
 
-# \### 2.7.2 虚拟机ip更改 （临时配置）
+\*物理网卡的名称通常为ensXX，enpXsX等，如上所示为ens33，以下网卡名称统一使用ens33作为示例\*
 
-# bash中
+\### 2.7.2 虚拟机ip更改 （临时配置）
 
-# ``` bash
+bash中
 
-# sudo ip addr add 172.23.100.101/24 dev ens33
+``` bash
 
-# sudo ip link set dev ens33 up
+sudo ip addr add 172.23.100.101/24 dev ens33
 
-# ip a
+sudo ip link set dev ens33 up
 
-# ```
+ip a
 
-# 应能看见ens33处出现IP地址，如
+```
 
-# ``` bash
+应能看见ens33处出现IP地址，如
 
-# 2: ens33: <BROADCAST,MULTICAST,UP,LOWER\_UP> mtu 1500 qdisc fq\_codel state UP group default qlen 1000
+``` bash
 
-#     link/ether 00:0c:29:ba:50:bc brd ff:ff:ff:ff:ff:ff
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER\_UP> mtu 1500 qdisc fq\_codel state UP group default qlen 1000
 
-#     altname enp2s1
+&nbsp;   link/ether 00:0c:29:ba:50:bc brd ff:ff:ff:ff:ff:ff
 
-#     inet 172.23.100.101/24 scope global ens33
+&nbsp;   altname enp2s1
 
-#        valid\_lft forever preferred\_lft forever
+&nbsp;   inet 172.23.100.101/24 scope global ens33
 
-# ```
+&nbsp;      valid\_lft forever preferred\_lft forever
 
-# \## 2.8 Rivz2显示点云图
+```
 
-# 1\. 打开雷达电源
+\## 2.8 Rivz2显示点云图
 
-# 2\. bash中
+1\. 打开雷达电源
 
-# ``` bash
+2\. bash中
 
-# cd ~/3dlidar\_ws
+``` bash
 
-# colcon build
+cd ~/3dlidar\_ws
 
-# source install/setup.bash
+colcon build
 
-# ros2 launch rslidar\_sdk start.py
+source install/setup.bash
 
-# ```
+ros2 launch rslidar\_sdk start.py
+
+```
+
+
+
+
+
+
+
+
 
