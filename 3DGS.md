@@ -5,7 +5,7 @@
 ---
 ## 1. sfm初始化稀疏点云
 
-![[屏幕截图 2026-03-17 201330.png]]
+![](./images/images/201330.png)
 
 - sfm (Structure from Motion) : 从多张照片中，推算出相机的位置和三维结构（点云）
 - COLMAP (sfm工具) : 自动完成 ：
