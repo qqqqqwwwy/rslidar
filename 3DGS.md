@@ -1,11 +1,11 @@
 # 整体框架
 
-![](./images/images/201252.png)
+![](./images/201252.png)
 
 ---
 ## 1. sfm初始化稀疏点云
 
-![](./images/images/201330.png)
+![](./images/201330.png)
 
 - sfm (Structure from Motion) : 从多张照片中，推算出相机的位置和三维结构（点云）
 - COLMAP (sfm工具) : 自动完成 ：
